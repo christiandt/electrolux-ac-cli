@@ -1,13 +1,15 @@
 import os
+import sys
 import fire
 import json
 import shutil
 import struct
-import broadlink.exceptions as e
 import typing as t
+
 from broadlink import hello
+import broadlink.exceptions as e
 from broadlink.device import Device
-from broadlink.exceptions import DataValidationError
+from broadlink.exceptions import DataValidationError, NetworkTimeoutError
 
 
 MAX_TEMP = 40
@@ -115,15 +117,35 @@ class Electrolux(Device):
 
 def main():
     home_config_path = os.path.expanduser('~/.electrolux_ac_config.json')
-    default_config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+    default_config = {"ip_address": "10.0.0.100"}
     if not os.path.exists(home_config_path):
-        # Copy default config to home directory if not present
-        shutil.copy(default_config_path, home_config_path)
+        # Create a placeholder config in the user's home directory if it doesn't exist
+        with open(home_config_path, 'w') as f:
+            json.dump(default_config, f, indent=2)
+        print(f"Created default config file at {home_config_path}. Please edit it with your device's IP address.")
+        sys.exit(0)
     with open(home_config_path, 'r') as f:
         config = json.load(f)
-    ip_address = config.get('ip_address', '10.0.0.248')
-    device = hello(ip_address=ip_address)
-    fire.Fire(Electrolux(device.host, device.mac, device.devtype, device.timeout, device.name, "", "Electrolux", device.is_locked))
+    try:
+        device = hello(ip_address=config.get('ip_address', '10.0.0.100'))
+        fire.Fire(
+            Electrolux(
+                device.host,
+                device.mac,
+                device.devtype,
+                device.timeout,
+                device.name,
+                "",
+                "Electrolux",
+                device.is_locked
+            )
+        )
+    except NetworkTimeoutError:
+        print(f"Failed to connect to device at {ip_address}. Please check the IP address and network connection.")
+        sys.exit(1)
+    except e.BroadlinkException as exc:
+        print(f"Error connecting to device: {exc}")
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
