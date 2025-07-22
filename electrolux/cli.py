@@ -17,7 +17,8 @@ MIN_TEMP = 0
 DEVICE_TYPE = 0x4f9b
 
 class Electrolux(Device):
-    """Controls an electrolux air conditioner.
+    """
+    Represents a controller for Electrolux air conditioners, providing methods to manage power, temperature, mode, fan, and other features.
     """
 
     TYPE = "ELECTROLUX_OEM"
