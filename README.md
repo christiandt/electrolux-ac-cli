@@ -30,7 +30,7 @@ elux <command> [options]
 Responses are printed in JSON format, so they can be easily parsed or piped to other commands.
 
 ```shell
-elux status | jq
+elux status | jq .envtemp
 ```
 
 ### Example Commands
