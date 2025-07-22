@@ -1,4 +1,7 @@
+import os
 import fire
+import json
+import shutil
 import struct
 import broadlink.exceptions as e
 import typing as t
@@ -111,7 +114,15 @@ class Electrolux(Device):
         return resp
 
 def main():
-    device = hello(ip_address="10.0.0.248")
+    home_config_path = os.path.expanduser('~/.electrolux_ac_config.json')
+    default_config_path = os.path.join(os.path.dirname(__file__), 'config.json')
+    if not os.path.exists(home_config_path):
+        # Copy default config to home directory if not present
+        shutil.copy(default_config_path, home_config_path)
+    with open(home_config_path, 'r') as f:
+        config = json.load(f)
+    ip_address = config.get('ip_address', '10.0.0.248')
+    device = hello(ip_address=ip_address)
     fire.Fire(Electrolux(device.host, device.mac, device.devtype, device.timeout, device.name, "", "Electrolux", device.is_locked))
 
 if __name__ == '__main__':
