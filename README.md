@@ -11,10 +11,10 @@ A command-line interface (CLI) for controlling Electrolux air conditioners via B
 
 ## Installation
 
-Clone this repository and install it using pip:
+Install it using pip:
 
 ```sh
-pip install .
+pip install git+https://github.com/christiandt/electrolux-ac-cli.git@main
 ```
 
 This will install the `electrolux` command globally.
