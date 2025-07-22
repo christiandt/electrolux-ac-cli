@@ -67,7 +67,17 @@ elux status | jq
 
 ## Configuration
 
-By default, the CLI connects to the device at `10.0.0.248`. To change this, edit the `main()` function in `electrolux/cli.py` and set the correct IP address.
+By default, the CLI connects to the device at the IP address specified in the config file `~/.electrolux_ac_config.json` in your home directory. The first time you run the CLI, this file will be created automatically with a default IP address (e.g., `10.0.0.100`).
+
+To change the device IP, edit the `~/.electrolux_ac_config.json` file and update the `ip_address` value:
+
+```json
+{
+  "ip_address": "10.0.0.248"
+}
+```
+
+If you need to reset the configuration, simply delete the file and run the CLI again to regenerate it.
 
 ## Requirements
 - Python 3.7+
@@ -76,4 +86,3 @@ By default, the CLI connects to the device at `10.0.0.248`. To change this, edit
 
 ## License
 MIT
-
