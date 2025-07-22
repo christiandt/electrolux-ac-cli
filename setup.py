@@ -4,7 +4,7 @@ setup(
     name="electrolux-cli",
     version="0.1.1",
     description="CLI for controlling Electrolux air conditioners",
-    author="Your Name",
+    author="Christian Dancke Tuen",
     packages=find_packages(),
     install_requires=[
         "fire",
