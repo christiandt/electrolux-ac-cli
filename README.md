@@ -17,46 +17,52 @@ Install it using pip:
 pip install git+https://github.com/christiandt/electrolux-ac-cli.git@main
 ```
 
-This will install the `electrolux` command globally.
+This will install the `elux` command globally.
 
 ## Usage
 
 Run the CLI with:
 
 ```sh
-electrolux <command> [options]
+elux <command> [options]
+```
+
+Responses are printed in JSON format, so they can be easily parsed or piped to other commands.
+
+```shell
+elux status | jq
 ```
 
 ### Example Commands
 
 - Get status:
   ```sh
-  electrolux status
+  elux status
   ```
 - Set temperature:
   ```sh
-  electrolux temp 24
+  elux temp 24
   ```
 - Power on/off:
   ```sh
-  electrolux power on
-  electrolux power off
+  elux power on
+  elux power off
   ```
 - Change mode:
   ```sh
-  electrolux mode cool
+  elux mode cool
   ```
 - Set fan speed:
   ```sh
-  electrolux fan high
+  elux fan high
   ```
 - Set swing:
   ```sh
-  electrolux swing on
+  elux swing on
   ```
 - Set timer:
   ```sh
-  electrolux timer True 2 30
+  elux timer True 2 30
   ```
 
 ## Configuration
