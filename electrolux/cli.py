@@ -230,18 +230,19 @@ def main():
         sys.exit(0)
     with open(home_config_path, 'r') as f:
         config = json.load(f)
+    ip_address = config.get('ip_address', '10.0.0.100')
     try:
-        device = hello(ip_address=config.get('ip_address', '10.0.0.100'))
+        device = hello(ip_address=ip_address)
         fire.Fire(
             Electrolux(
-                device.host,
-                device.mac,
-                device.devtype,
-                device.timeout,
-                device.name,
-                "",
-                "Electrolux",
-                device.is_locked
+                host=device.host,
+                mac=device.mac,
+                devtype=device.devtype,
+                timeout=device.timeout,
+                name=device.name,
+                model="",
+                manufacturer="Electrolux",
+                is_locked=device.is_locked
             )
         )
     except NetworkTimeoutError:
