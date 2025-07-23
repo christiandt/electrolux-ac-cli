@@ -11,11 +11,6 @@ import broadlink.exceptions as e
 from broadlink.device import Device
 from broadlink.exceptions import DataValidationError, NetworkTimeoutError
 
-
-MAX_TEMP = 40
-MIN_TEMP = 0
-DEVICE_TYPE = 0x4f9b
-
 class Electrolux(Device):
     """
     Represents a controller for Electrolux air conditioners, providing methods to manage power, temperature, mode, fan, and other features.
@@ -54,8 +49,6 @@ class Electrolux(Device):
         d_checksum = sum(packet[0x08:], 0xC0AD) & 0xFFFF
         packet[0x06:0x08] = d_checksum.to_bytes(2, "little")
 
-        #print(' '.join(format(x, '02x') for x in packet))
-
         resp = self.send_packet(0x6A, packet)
         e.check_error(resp[0x22:0x24])
         dcry = self.decrypt(resp[0x38:])
@@ -92,7 +85,9 @@ class Electrolux(Device):
         Returns:
             str: The response from the device after setting the temperature.
         """
-        temp = max(MIN_TEMP, min(temp, MAX_TEMP))
+        max_temp = 30
+        min_temp = 16
+        temp = max(min_temp, min(temp, max_temp))
         resp = self._send(0x17, bytearray('{"temp":%s}' % temp, "ascii"))
         return str(resp, "ascii")
 
